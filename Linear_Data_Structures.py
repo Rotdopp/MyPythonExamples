@@ -11,7 +11,7 @@ stack.append(3)
 element = stack.pop()      # Pop (removes 3)
 print(stack)
 print(element)
-print(stack[-1])
+print(stack[-1]) #last element in the stack
 print("-----------------")
 
 #Queues
@@ -88,7 +88,7 @@ print(search(Head, 2))
 print(search(Head, 9))
 print(search(Head, 7))
 
-print(input("You want to continue ? "))
+input("You want to continue ? ")
 
 
 #Doubly Linked Lists
@@ -115,21 +115,68 @@ def display(head):
 
 display(head)
 
+
+# Insert at the beginning of the list
 def insert_at_beginning(head, tail, val):
-    new_node = DoublyNode(val, next=head)
-    head.prev = new_node
-    return new_node, tail
+    new_node = DoublyNode(val, next=head)  # Create new node and set it as the new head
+    if head:
+        head.prev = new_node  # Make the old head point back to the new node
+    return new_node, tail  # New head, and tail stays the same
 
 head, tail = insert_at_beginning(head, tail, 3)
 
 display(head)
 
 def insert_at_end(head, tail, val):
-    new_node = DoublyNode(val, prev=tail)
-    tail.next = new_node
-    return head, new_node
+    new_node = DoublyNode(val, prev=tail)  # Create new node and set it as the new tail
+    if tail:
+        tail.next = new_node  # Make the old tail point to the new node
+    return head, new_node  # Head stays the same, new node becomes the new tail
+
+
+def insert_after(node, val):
+    new_node = DoublyNode(val)
+
+    # Link the new node to the list
+    new_node.next = node.next  # New node's next points to the node after current
+    new_node.prev = node  # New node's prev points to current node
+
+    if node.next:  # If there's a node after the current node
+        node.next.prev = new_node  # Update the previous pointer of the node after current
+    node.next = new_node  # Update the next pointer of the current node
+
+    return new_node  # Return the newly inserted node
+
+def insert_before(node, val):
+    new_node = DoublyNode(val) #create the new node
+
+    #link the new_node to the place
+    new_node.next = node
+    new_node.prev = node.prev
+
+    if node.prev:
+        node.prev.next = new_node
+    node.prev = new_node
+
+    return new_node
+
+
+
+
 
 head, tail = insert_at_end(head, tail, 7)
 
 display(head)
 print(tail.next)
+
+
+node_to_insert_after = head.next  # Node with value 3
+new_node = insert_after(node_to_insert_after, 4)
+print("\nAfter Inserting 4 After Node 3:")
+display(head)
+
+node_to_insert_before = head.next.next
+new_node = insert_before(node_to_insert_before, 2)
+print("\nAfter Inserting 2 before Node 4:")
+display(head)
+
